@@ -160,6 +160,7 @@ func (m *monitor) detect() {
 	if !allResourcesAreLowUsage {
 		return
 	}
+	klog.InfoS("All resources are low usage, removing eviction annotation")
 	if err := m.RecoverSchedule(); err != nil {
 		klog.ErrorS(err, "Failed to recover schedule")
 	}
@@ -171,6 +172,7 @@ func (m *monitor) isHighResourceUsageOnce(node *v1.Node, usage apis.Resource, re
 	//TODO: set in node config
 	_, highWatermark, exists, err := utilnode.WatermarkAnnotationSetting(node)
 	if !exists {
+		klog.V(5).Infof("Watermark annotation not found, using default high watermark", "resName", resName, "usage", usage[resName], "highWatermark", m.highWatermark[resName])
 		return usage[resName] >= int64(m.highWatermark[resName])
 	}
 	if err != nil {
@@ -185,6 +187,7 @@ func (m *monitor) isLowResourceUsageOnce(node *v1.Node, usage apis.Resource, res
 	defer m.cfgLock.RUnlock()
 	lowWatermark, _, exists, err := utilnode.WatermarkAnnotationSetting(node)
 	if !exists {
+		klog.V(5).Infof("Watermark annotation not found, using default low watermark", "resName", resName, "usage", usage[resName], "lowWatermark", m.lowWatermark[resName])
 		return usage[resName] <= int64(m.lowWatermark[resName])
 	}
 	if err != nil {

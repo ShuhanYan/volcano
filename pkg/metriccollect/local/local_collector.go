@@ -46,8 +46,8 @@ type SubCollector interface {
 
 func getSubLocalCollectors() map[string]func(cgroupManager cgroup.CgroupManager) (SubCollector, error) {
 	initiatedCollectorFuncs := make(map[string]func(cgroupManager cgroup.CgroupManager) (SubCollector, error))
-	initiatedCollectorFuncs["cpu"] = NewCPUResourceCollector
-	initiatedCollectorFuncs["memory"] = NewMemoryResourceCollector
+	initiatedCollectorFuncs["cpu"] = NewCPUResourceCollectorV2
+	initiatedCollectorFuncs["memory"] = NewMemoryResourceCollectorV2
 	return initiatedCollectorFuncs
 }
 

@@ -34,7 +34,7 @@ const (
 	CgroupCpuSubsystem    CgroupSubsystem = "cpu"
 	CgroupNetCLSSubsystem CgroupSubsystem = "net_cls"
 
-	CgroupKubeRoot string = "kubepods"
+	CgroupKubeRoot string = "kubepods.slice"
 
 	SystemdSuffix       string = ".slice"
 	PodCgroupNamePrefix string = "pod"
@@ -89,7 +89,10 @@ func (c *CgroupManagerImpl) GetRootCgroupPath(cgroupSubsystem CgroupSubsystem) (
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(c.cgroupRoot, string(cgroupSubsystem), cgroupPath), err
+
+	return filepath.Join(c.cgroupRoot, cgroupPath), err
+
+	//return filepath.Join(c.cgroupRoot, string(cgroupSubsystem), cgroupPath), err
 }
 
 func (c *CgroupManagerImpl) GetQoSCgroupPath(qos corev1.PodQOSClass, cgroupSubsystem CgroupSubsystem) (string, error) {
@@ -108,7 +111,8 @@ func (c *CgroupManagerImpl) GetQoSCgroupPath(qos corev1.PodQOSClass, cgroupSubsy
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(c.cgroupRoot, string(cgroupSubsystem), cgroupPath), err
+	return filepath.Join(c.cgroupRoot, cgroupPath), err
+	//return filepath.Join(c.cgroupRoot, string(cgroupSubsystem), cgroupPath), err
 }
 
 func (c *CgroupManagerImpl) GetPodCgroupPath(qos corev1.PodQOSClass, cgroupSubsystem CgroupSubsystem, podUID types.UID) (string, error) {
@@ -128,7 +132,10 @@ func (c *CgroupManagerImpl) GetPodCgroupPath(qos corev1.PodQOSClass, cgroupSubsy
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(c.cgroupRoot, string(cgroupSubsystem), cgroupPath), err
+
+	return filepath.Join(c.cgroupRoot, cgroupPath), err
+
+	//return filepath.Join(c.cgroupRoot, string(cgroupSubsystem), cgroupPath), err
 }
 
 func (c *CgroupManagerImpl) CgroupNameToCgroupPath(cgroupName []string) (string, error) {

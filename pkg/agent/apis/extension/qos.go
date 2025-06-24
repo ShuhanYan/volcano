@@ -49,7 +49,10 @@ func GetQosLevel(pod *corev1.Pod) int {
 		return 0
 	}
 
-	qosLevel := pod.GetAnnotations()[apis.PodQosLevelKey]
+	qosLevel, ok := pod.GetAnnotations()[apis.PodQosLevelKey]
+	if !ok {
+		return 0
+	}
 	return qosLevelMap[QosLevel(qosLevel)]
 }
 

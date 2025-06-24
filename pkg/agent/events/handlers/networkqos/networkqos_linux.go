@@ -31,7 +31,6 @@ import (
 	"volcano.sh/volcano/pkg/agent/apis/extension"
 	"volcano.sh/volcano/pkg/agent/config/api"
 	"volcano.sh/volcano/pkg/agent/events/framework"
-	"volcano.sh/volcano/pkg/agent/events/handlers"
 	"volcano.sh/volcano/pkg/agent/events/handlers/base"
 	"volcano.sh/volcano/pkg/agent/features"
 	"volcano.sh/volcano/pkg/agent/utils"
@@ -42,7 +41,7 @@ import (
 )
 
 func init() {
-	handlers.RegisterEventHandleFunc(string(framework.PodEventName), NewNetworkQoSHandle)
+	// handlers.RegisterEventHandleFunc(string(framework.PodEventName), NewNetworkQoSHandle)
 }
 
 type NetworkQoSHandle struct {
