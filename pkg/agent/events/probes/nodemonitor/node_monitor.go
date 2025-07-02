@@ -160,7 +160,6 @@ func (m *monitor) detect() {
 	if !allResourcesAreLowUsage {
 		return
 	}
-	klog.InfoS("All resources are low usage, removing eviction annotation")
 	if err := m.RecoverSchedule(); err != nil {
 		klog.ErrorS(err, "Failed to recover schedule")
 	}

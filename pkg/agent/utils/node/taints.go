@@ -21,6 +21,7 @@ import (
 	"fmt"
 
 	v1 "k8s.io/api/core/v1"
+	"k8s.io/klog/v2"
 	"k8s.io/kubernetes/pkg/controller"
 
 	"volcano.sh/volcano/pkg/agent/apis"
@@ -41,5 +42,12 @@ func RecoverSchedule(config *config.Configuration) error {
 	if err != nil {
 		return fmt.Errorf("failed to get node, err: %v", err)
 	}
+	if node != nil {
+		if !taintutils.TaintExists(node.Spec.Taints, taint) {
+			return nil
+		}
+	}
+
+	klog.InfoS("Recovering node schedule by removing taint", "node", config.GenericConfiguration.KubeNodeName, "taint", taint)
 	return controller.RemoveTaintOffNode(context.TODO(), config.GenericConfiguration.KubeClient, config.GenericConfiguration.KubeNodeName, node, taint)
 }
