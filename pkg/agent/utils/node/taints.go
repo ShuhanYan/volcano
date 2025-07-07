@@ -23,6 +23,7 @@ import (
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/klog/v2"
 	"k8s.io/kubernetes/pkg/controller"
+	taintutils "k8s.io/kubernetes/pkg/util/taints"
 
 	"volcano.sh/volcano/pkg/agent/apis"
 	"volcano.sh/volcano/pkg/config"

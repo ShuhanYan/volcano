@@ -45,6 +45,14 @@ var qosLevelMap = map[QosLevel]int{
 // GetQosLevel return OS qos level by QosLevel.
 // If not specified, zero will be returned.
 func GetQosLevel(pod *corev1.Pod) int {
+	for _, c := range pod.Spec.Containers {
+		for resourceName := range c.Resources.Requests {
+			if resourceName == apis.ExtendResourceCPU || resourceName == apis.ExtendResourceMemory {
+				return -1
+			}
+		}
+	}
+
 	if pod == nil {
 		return 0
 	}
