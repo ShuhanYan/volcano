@@ -117,9 +117,13 @@ func (m *monitor) utilizationMonitoring() {
 	usage := m.usageGetter.UsagesByPercentage(nodeCopy)
 	for _, res := range apis.OverSubscriptionResourceTypes {
 		if m.isHighResourceUsageOnce(nodeCopy, apis.Resource(usage), res) {
+			klog.InfoS("Resource usage is high", "resource", res, "usage", usage[res], "highWatermark", m.highWatermark[res])
 			m.highUsageCountByResName[res]++
 		} else {
-			m.highUsageCountByResName[res] = 0
+			if m.highUsageCountByResName[res] > 0 {
+				klog.InfoS("Resource usage is low", "resource", res, "usage", usage[res], "highWatermark", m.highWatermark[res])
+				m.highUsageCountByResName[res] = 0
+			}
 		}
 	}
 }

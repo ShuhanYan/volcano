@@ -20,11 +20,9 @@ import (
 	"fmt"
 	"strings"
 	"sync"
-	"time"
 
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/util/sets"
-	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/util/workqueue"
 	"k8s.io/klog/v2"
 
@@ -69,8 +67,8 @@ func NewCalculator(config *config.Configuration, mgr *metriccollect.MetricCollec
 
 func (r *historicalUsageCalculator) Run(stop <-chan struct{}) {
 	klog.InfoS("Started nodeResources probe")
-	go wait.Until(r.CalOverSubscriptionResources, 10*time.Second, stop)
-	go wait.Until(r.preProcess, 10*time.Second, stop)
+	// go wait.Until(r.CalOverSubscriptionResources, 10*time.Second, stop)
+	// go wait.Until(r.preProcess, 10*time.Second, stop)
 }
 
 func (r *historicalUsageCalculator) ProbeName() string {
