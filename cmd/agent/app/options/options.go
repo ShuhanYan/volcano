@@ -62,6 +62,9 @@ type VolcanoAgentOptions struct {
 
 	// IncludeSystemUsage determines whether considering system usage when calculate overSubscription resource and evict.
 	IncludeSystemUsage bool
+
+	// ExtendResourceCPUName is the name of the extend resource cpu, which is used to calculate overSubscription resources.
+	EvictionGracePeriodSeconds int64
 }
 
 func NewVolcanoAgentOptions() *VolcanoAgentOptions {
@@ -81,6 +84,7 @@ func (options *VolcanoAgentOptions) AddFlags(c *cobra.Command) {
 	// TODO: put in configMap.
 	c.Flags().IntVar(&options.OverSubscriptionRatio, "oversubscription-ratio", defaultOverSubscriptionRatio, "The oversubscription ratio determines how many idle resources can be oversold")
 	c.Flags().BoolVar(&options.IncludeSystemUsage, "include-system-usage", false, "It determines whether considering system usage when calculate overSubscription resource and evict.")
+	c.Flags().Int64Var(&options.EvictionGracePeriodSeconds, "eviction-grace-period-seconds", 0, "The grace period for eviction, default to 0 second, which means no grace period.")
 }
 
 func (options *VolcanoAgentOptions) Validate() error {
@@ -101,5 +105,6 @@ func (options *VolcanoAgentOptions) ApplyTo(cfg *config.Configuration) error {
 	cfg.GenericConfiguration.OverSubscriptionPolicy = options.OverSubscriptionPolicy
 	cfg.GenericConfiguration.OverSubscriptionRatio = options.OverSubscriptionRatio
 	cfg.GenericConfiguration.IncludeSystemUsage = options.IncludeSystemUsage
+	cfg.GenericConfiguration.EvictionGracePeriodSeconds = options.EvictionGracePeriodSeconds
 	return nil
 }

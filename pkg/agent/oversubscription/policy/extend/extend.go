@@ -89,7 +89,7 @@ func (e *extendResource) Cleanup() error {
 	if err := policy.EvictPods(&policy.EvictionCtx{
 		Configuration:       e.config,
 		Eviction:            e.evictor,
-		GracePeriodOverride: 0,
+		GracePeriodOverride: e.config.GenericConfiguration.EvictionGracePeriodSeconds,
 		EvictMsg:            "Evict offline pod due to node overSubscription is turned off",
 		GetPodsFunc:         e.getPodsFunc,
 		Filter:              utilnode.UseExtendResource,

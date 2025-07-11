@@ -94,7 +94,7 @@ func (m *manager) Handle(event interface{}) error {
 			klog.InfoS("Successfully disable schedule")
 
 			klog.InfoS("Try to evict pod", "pod", klog.KObj(pod))
-			if m.Evict(context.TODO(), pod, m.cfg.GenericConfiguration.Recorder, 0, fmt.Sprintf("Evict offline pod due to %s resource pressure", res)) {
+			if m.Evict(context.TODO(), pod, m.cfg.GenericConfiguration.Recorder, m.cfg.GenericConfiguration.EvictionGracePeriodSeconds, fmt.Sprintf("Evict offline pod due to %s resource pressure", res)) {
 				break
 			}
 		}

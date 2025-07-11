@@ -74,4 +74,7 @@ type VolcanoAgentConfiguration struct {
 
 	// IncludeSystemUsage determines whether considering system usage when calculate overSubscription resource and evict.
 	IncludeSystemUsage bool
+
+	// EvictionGracePeriodSeconds is the grace period for eviction.
+	EvictionGracePeriodSeconds int64
 }

@@ -45,7 +45,7 @@ const (
 )
 
 func evictPod(ctx context.Context, client clientset.Interface, gracePeriodSeconds *int64, pod *corev1.Pod, evictionVersion string) error {
-	if *gracePeriodSeconds < int64(0) {
+	if gracePeriodSeconds != nil && *gracePeriodSeconds < int64(0) {
 		*gracePeriodSeconds = int64(0)
 	}
 
