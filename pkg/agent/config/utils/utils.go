@@ -164,7 +164,7 @@ func MergerCfg(fullConfig *api.VolcanoAgentConfig, node *corev1.Node) (*api.Colo
 		return mergedCfg, err
 	}
 
-	enableOverSubscription := utilpointer.Bool(utilnode.IsNodeSupportOverSubscription(node))
+	enableOverSubscription := utilpointer.Bool(utilnode.IsNodeSupportOverSubscription(node) || (mergedCfg.OverSubscriptionConfig.Enable != nil && *mergedCfg.OverSubscriptionConfig.Enable))
 	mergedCfg.NodeLabelConfig.NodeColocationEnable = utilpointer.Bool(utilnode.IsNodeSupportColocation(node) || *enableOverSubscription)
 	mergedCfg.NodeLabelConfig.NodeOverSubscriptionEnable = enableOverSubscription
 

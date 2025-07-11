@@ -99,6 +99,7 @@ type OverSubscription struct {
 	Enable *bool `json:"enable,omitempty"`
 	// OverSubscriptionTypes defines over subscription types, such as cpu,memory.
 	OverSubscriptionTypes *string `json:"overSubscriptionTypes,omitempty"`
+	EnableOnAllNodes      *bool   `json:"enableOnAllNodes,omitempty"`
 }
 
 type Evicting struct {

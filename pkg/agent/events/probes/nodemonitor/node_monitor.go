@@ -117,9 +117,13 @@ func (m *monitor) utilizationMonitoring() {
 	usage := m.usageGetter.UsagesByPercentage(nodeCopy)
 	for _, res := range apis.OverSubscriptionResourceTypes {
 		if m.isHighResourceUsageOnce(nodeCopy, apis.Resource(usage), res) {
+			klog.InfoS("Resource usage is high", "resource", res, "usage", usage[res], "highWatermark", m.highWatermark[res])
 			m.highUsageCountByResName[res]++
 		} else {
-			m.highUsageCountByResName[res] = 0
+			if m.highUsageCountByResName[res] > 0 {
+				klog.InfoS("Resource usage is low", "resource", res, "usage", usage[res], "highWatermark", m.highWatermark[res])
+				m.highUsageCountByResName[res] = 0
+			}
 		}
 	}
 }
@@ -171,6 +175,7 @@ func (m *monitor) isHighResourceUsageOnce(node *v1.Node, usage apis.Resource, re
 	//TODO: set in node config
 	_, highWatermark, exists, err := utilnode.WatermarkAnnotationSetting(node)
 	if !exists {
+		klog.V(5).Infof("Watermark annotation not found, using default high watermark", "resName", resName, "usage", usage[resName], "highWatermark", m.highWatermark[resName])
 		return usage[resName] >= int64(m.highWatermark[resName])
 	}
 	if err != nil {
@@ -185,6 +190,7 @@ func (m *monitor) isLowResourceUsageOnce(node *v1.Node, usage apis.Resource, res
 	defer m.cfgLock.RUnlock()
 	lowWatermark, _, exists, err := utilnode.WatermarkAnnotationSetting(node)
 	if !exists {
+		klog.V(5).Infof("Watermark annotation not found, using default low watermark", "resName", resName, "usage", usage[resName], "lowWatermark", m.lowWatermark[resName])
 		return usage[resName] <= int64(m.lowWatermark[resName])
 	}
 	if err != nil {

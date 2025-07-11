@@ -79,7 +79,8 @@ func Run(ctx context.Context, opts *options.VolcanoAgentOptions) error {
 	networkQoSMgr := networkqos.NewNetworkQoSManager(conf)
 	err = networkQoSMgr.Init()
 	if err != nil {
-		return fmt.Errorf("failed to init network qos: %v", err)
+		klog.ErrorS(err, "Failed to initialize network QoS manager")
+		networkQoSMgr = nil
 	}
 
 	eventManager := events.NewEventManager(conf, metricCollectorManager, cgroupManager)

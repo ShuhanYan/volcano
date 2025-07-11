@@ -62,6 +62,27 @@ type VolcanoAgentOptions struct {
 
 	// IncludeSystemUsage determines whether considering system usage when calculate overSubscription resource and evict.
 	IncludeSystemUsage bool
+
+	// ExtendResourceCPU is the extend resource cpu, which is used to calculate overSubscription resources.
+	ExtendResourceCPU string
+
+	// ExtendResourceMemory is the extend resource memory, which is used to calculate overSubscription resources.
+	ExtendResourceMemory string
+
+	// WatermarkSource defines the source of the watermark, which is used to calculate overSubscription resources, it can be "annotation" or "config".
+	WatermarkSource string
+
+	// PodEvictedCPUHighWaterMark defines the high watermark of cpu usage when evicting offline pods
+	PodEvictedCPUHighWaterMark string
+
+	// PodEvictedMemoryHighWaterMark defines the high watermark of memory usage when evicting offline pods
+	PodEvictedMemoryHighWaterMark string
+
+	// PodEvictedCPULowWaterMark defines the low watermark of cpu usage when the node could overSubscription resources
+	PodEvictedCPULowWaterMark string
+
+	// PodEvictedMemoryLowWaterMark defines the low watermark of memory usage when the node could overSubscription resources
+	PodEvictedMemoryLowWaterMark string
 }
 
 func NewVolcanoAgentOptions() *VolcanoAgentOptions {
@@ -81,6 +102,8 @@ func (options *VolcanoAgentOptions) AddFlags(c *cobra.Command) {
 	// TODO: put in configMap.
 	c.Flags().IntVar(&options.OverSubscriptionRatio, "oversubscription-ratio", defaultOverSubscriptionRatio, "The oversubscription ratio determines how many idle resources can be oversold")
 	c.Flags().BoolVar(&options.IncludeSystemUsage, "include-system-usage", false, "It determines whether considering system usage when calculate overSubscription resource and evict.")
+	c.Flags().StringVar(&options.ExtendResourceCPU, "extend-resource-cpu", "", "The extended cpu resource name, which is used to calculate oversubscription resources, default to kubernetes.io/cpu")
+	c.Flags().StringVar(&options.ExtendResourceMemory, "extend-resource-memory", "", "The extended memory resource name, which is used to calculate oversubscription resources, default to kubernetes.io/memory")
 }
 
 func (options *VolcanoAgentOptions) Validate() error {
@@ -101,5 +124,7 @@ func (options *VolcanoAgentOptions) ApplyTo(cfg *config.Configuration) error {
 	cfg.GenericConfiguration.OverSubscriptionPolicy = options.OverSubscriptionPolicy
 	cfg.GenericConfiguration.OverSubscriptionRatio = options.OverSubscriptionRatio
 	cfg.GenericConfiguration.IncludeSystemUsage = options.IncludeSystemUsage
+	cfg.GenericConfiguration.ExtendResourceCPU = options.ExtendResourceCPU
+	cfg.GenericConfiguration.ExtendResourceMemory = options.ExtendResourceMemory
 	return nil
 }

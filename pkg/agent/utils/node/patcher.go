@@ -77,8 +77,8 @@ func updateNodeOverSoldStatus(res apis.Resource) Modifier {
 		for k, v := range res {
 			switch k {
 			case v1.ResourceCPU:
-				node.Status.Allocatable[apis.ExtendResourceCPU] = *resource.NewQuantity(v, resource.DecimalSI)
-				node.Status.Capacity[apis.ExtendResourceCPU] = *resource.NewQuantity(v, resource.DecimalSI)
+				node.Status.Allocatable[apis.ExtendResourceCPU] = *resource.NewQuantity(v/1000, resource.DecimalSI)
+				node.Status.Capacity[apis.ExtendResourceCPU] = *resource.NewQuantity(v/1000, resource.DecimalSI)
 			case v1.ResourceMemory:
 				node.Status.Allocatable[apis.ExtendResourceMemory] = *resource.NewQuantity(v, resource.BinarySI)
 				node.Status.Capacity[apis.ExtendResourceMemory] = *resource.NewQuantity(v, resource.BinarySI)

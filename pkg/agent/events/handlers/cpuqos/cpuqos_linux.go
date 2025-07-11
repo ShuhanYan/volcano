@@ -25,7 +25,6 @@ import (
 	"k8s.io/klog/v2"
 
 	"volcano.sh/volcano/pkg/agent/events/framework"
-	"volcano.sh/volcano/pkg/agent/events/handlers"
 	"volcano.sh/volcano/pkg/agent/events/handlers/base"
 	"volcano.sh/volcano/pkg/agent/features"
 	"volcano.sh/volcano/pkg/agent/utils"
@@ -35,7 +34,7 @@ import (
 )
 
 func init() {
-	handlers.RegisterEventHandleFunc(string(framework.PodEventName), NewCPUQoSHandle)
+	// handlers.RegisterEventHandleFunc(string(framework.PodEventName), NewCPUQoSHandle)
 }
 
 type CPUQoSHandle struct {

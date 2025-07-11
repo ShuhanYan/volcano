@@ -65,11 +65,15 @@ const (
 	// ResourceDefaultPrefix is the extended resource prefix.
 	ResourceDefaultPrefix = "kubernetes.io/"
 
-	ExtendResourceCPU    = ResourceDefaultPrefix + "batch-cpu"
-	ExtendResourceMemory = ResourceDefaultPrefix + "batch-memory"
-
 	// ColocationPolicyKey is the label key of node custom colocation policy.
 	ColocationPolicyKey = "colocation-policy"
+)
+
+var (
+	// ExtendResourceCPU is the extended cpu resource name.
+	ExtendResourceCPU = corev1.ResourceName(ResourceDefaultPrefix + "cpu")
+	// ExtendResourceMemory is the extended memory resource name.
+	ExtendResourceMemory = corev1.ResourceName(ResourceDefaultPrefix + "memory")
 )
 
 var OverSubscriptionResourceTypes = []corev1.ResourceName{corev1.ResourceCPU, corev1.ResourceMemory}
